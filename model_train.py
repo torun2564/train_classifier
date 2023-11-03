@@ -6,10 +6,71 @@ from torchvision import models, transforms
 from PIL import Image
 import timm
 
-classes_ja = ["東武50090系", "メトロ10000系","横須賀線E217系","横須賀線E235系","山手線E235系","総武線E231系", "東急東横線4000型", "東武20000系", "東武60000系", "東武70000系", "メトロ17000系", "東武8000系", "東武9000系","東武10000系","東武10030系","東武30000系","東武50000系","メトロ7000系"]
-classes_en = ["tobu50090", "metro10000", "JR_E217_yokosuka", "JR_E235_yokosuka", "JR_E235_yamanote", "JR_E231_sobu", "tokyu4000", "tobu20000", "tobu60000","tobu70000", "metro17000", "tobu8000", "tobu9000","tobu10000","tobu10030","tobu30000","tobu50000","metro7000"]
+classes_ja = ['E5',
+              'E6',
+              'E7',
+              'JR中央線E233系',
+              'JR八高線E231系',
+              'JR京浜東北線E233系',
+              'JR京葉線E233系',
+              'JR武蔵野線E231系',
+              'JR埼京線E233系',
+              'JR湘南新宿ラインE231系',
+              'JR湘南新宿ラインE233系',
+              'JR総武線E231系',
+             'JR山手線E235系',
+             'JR横須賀線E217系',
+             'JR横須賀線E235系',
+              'N700',
+             'メトロ10000系',
+             'メトロ17000系',
+             'メトロ7000系',
+             '東武10000系',
+             '東武10030系',
+             '東武20000系',
+             '東武30000系',
+             '東武50000系',
+             '東武50090系',
+             '東武60000系',
+             '東武70000系',
+             '東武8000系',
+             '東武9000系',
+             '東急4000型']
 
-img_size = 128
+classes_en = ['E5',
+ 'E6',
+ 'E7',
+ 'JR_chuoh_E233',
+ 'JR_hachiko_E231',
+ 'JR_keihintohoku_E233',
+ 'JR_keiyo_E233',
+ 'JR_musashino_E231',
+ 'JR_saikyo_E233',
+ 'JR_shonanshinjuku_E231',
+ 'JR_shonanshinjuku_E233',
+ 'JR_sobu_E231',
+ 'JR_yamanote_E235',
+ 'JR_yokosuka_E217',
+ 'JR_yokosuka_E235',
+ 'N700',
+ 'metoro10000',
+ 'metoro17000',
+ 'metoro7000',
+ 'tobu10000',
+ 'tobu10030',
+ 'tobu20000',
+ 'tobu30000',
+ 'tobu50000',
+ 'tobu50090',
+ 'tobu60000',
+ 'tobu70000',
+ 'tobu8000',
+ 'tobu9000',
+ 'tokyu4000']
+
+
+
+img_size = 256
 
 # 画像認識モデル
 timm_model = "mobilenetv3_small_100"
@@ -36,5 +97,5 @@ def predict(img):
     y_pred = F.softmax(torch.squeeze(y))
     sorted_prob, sorted_indices = torch.sort(y_pred, descending=True) # 予測確率を降順にソート
     
-    return [(classes_ja[idx], classes_en[idx], prob.item()) for idx, prob in zip(sorted_indices, sorted_prob)]
+    return [(classes_ja[idx.item()], classes_en[idx.item()], prob.item()) for idx, prob in zip(sorted_indices, sorted_prob)]
         
